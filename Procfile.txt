@@ -1,0 +1,1 @@
+web: sh setup.sh && streamlit run Foot-stat_dashboard.py
