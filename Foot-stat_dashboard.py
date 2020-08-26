@@ -89,10 +89,6 @@ for i in clubs:
 	total.append(total_goals.item())
 
 
-#Диаграмма рассеяния
-def scatter_plot(x, y, hue):
-	
-	sns.scatterplot(x=x, y=y, hue=hue)
 
 #Круговая диаграмма
 def pie_plot(x, y):
@@ -119,12 +115,12 @@ def dist_plot(x):
 #Рисуем все диаграммы
 if st.sidebar.checkbox('Показать диаграммы'):
 
-	# try:
-	# 	scatter_plot(new_df[sort_by[0]], new_df[sort_by[1]], new_df['Клуб'])
-	# 	st.subheader(f'Диаграмма рассеяния: \'{sort_by[0]}\' и \'{sort_by[1]}\'')
-	# 	st.pyplot()
-	# except (IndexError, KeyError) as e:
-	# 	pass
+	try:
+		sns.scatterplot(x=new_df[sort_by[0]], y=new_df[sort_by[1]], hue=new_df['Клуб'])
+		st.subheader(f'Диаграмма рассеяния: \'{sort_by[0]}\' и \'{sort_by[1]}\'')
+		st.pyplot()
+	except (IndexError, KeyError) as e:
+		pass
 
 	try:
 		dist_plot(new_df[sort_by[0]])
