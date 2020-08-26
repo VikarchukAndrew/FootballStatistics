@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+import numpy as np
 
 @st.cache
 def cache_func(a,b):
@@ -20,19 +21,20 @@ df = df.drop(df.index[df['Кол-во минут'] == 0])
 st.sidebar.title('Статистика игроков топ-5 лиг за 2019-20')
 
 clubs = st.sidebar.multiselect(
-	'Выберите клуб', df['Клуб'].unique()
+	'Выберите клуб', list(df['Клуб'].unique()), default=list(df['Клуб'].unique())[8:9] + list(df['Клуб'].unique())[45:46] + list(df['Клуб'].unique())[-29:-30:-1]
 )
 
 position = st.sidebar.multiselect(
-	'Выберите позицию', df['Позиция'].unique()
+	'Выберите позицию', list(df['Позиция'].unique()), default=list(df['Позиция'].unique())[0:6:5]
 )
 
+
 parameter = st.sidebar.multiselect(
-	'Выберите параметры', df.columns
+	'Выберите параметры', list(df.columns), default=list(df.columns)[1:3] + list(df.columns)[-1:-5:-3] + list(df.columns)[4:5]
 )
 
 sort_by = st.sidebar.multiselect(
-	'Фильтр', parameter 
+	'Фильтр', parameter, default=parameter[2:4] 
 )
 
 
@@ -89,49 +91,27 @@ for i in clubs:
 	total.append(total_goals.item())
 
 
-
-#Круговая диаграмма
-def pie_plot(x, y):
 	
-	fig1, ax1 = plt.subplots()
-	ax1.pie(x, labels=y, autopct='%1.1f%%')
-	ax1.axis('equal')
-
-	plt.show()
-
-#Диаграмма размаха
-def box_plot(x, y):
-	
-	sns.boxplot(x=x, y=y)
-
-
-#Гистограмма
-def dist_plot(x):
-
-	sns.distplot(x, hist=False, color="g", kde_kws={"shade": True})
-
-
-
 #Рисуем все диаграммы
 if st.sidebar.checkbox('Показать диаграммы'):
 
 	try:
-		sns.scatterplot(x=new_df[sort_by[0]], y=new_df[sort_by[1]], hue=new_df['Клуб'])
-		st.subheader(f'Диаграмма рассеяния: \'{sort_by[0]}\' и \'{sort_by[1]}\'')
+		sns.pairplot(new_df, hue="Клуб")
+		st.subheader(f'Диаграмма рассеяния и Гистограмма')
 		st.pyplot()
 	except (IndexError, KeyError) as e:
 		pass
 
 	try:
-		dist_plot(new_df[sort_by[0]])
-		st.subheader(f'Гистограмма: \'{sort_by[0]}\'')
+		sns.kdeplot(new_df[sort_by[0]], new_df[sort_by[1]])
+		st.subheader(f'Градиент: \'{sort_by[0]}\'')
 		st.pyplot()
 	except (IndexError, ValueError) as e:
 		pass
 
 	
 	try:
-		box_plot(new_df['Клуб'], new_df[sort_by[0]])
+		sns.boxplot(new_df['Клуб'], new_df[sort_by[0]])
 		st.subheader(f'Диаграмма размаха: \'Клуб\' и \'{sort_by[0]}\'')
 		st.pyplot()
 	except (IndexError, KeyError, ValueError) as e:
@@ -139,7 +119,12 @@ if st.sidebar.checkbox('Показать диаграммы'):
 
 
 	try:
-		pie_plot(total, clubs)
+		fig1, ax1 = plt.subplots()
+		ax1.pie(total, labels=clubs, autopct='%1.1f%%')
+		ax1.axis('equal')
+
+		plt.show()
+
 		st.subheader(f'Круговая диаграмма: \'Голы\'')
 		st.pyplot()
 	except:
