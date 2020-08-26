@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-import numpy as np
+
 
 @st.cache
 def cache_func(a,b):
@@ -18,6 +18,7 @@ df = df.drop(df.index[df['Кол-во минут'] == 0])
 
 #Создаем сайдбар и селекторы
 
+st.sidebar.title('Andrew Vikarchuk')
 st.sidebar.title('Статистика игроков топ-5 лиг за 2019-20')
 
 clubs = st.sidebar.multiselect(
