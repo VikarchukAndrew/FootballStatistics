@@ -9,7 +9,7 @@ def cache_func(a,b):
 
 sns.set(style='darkgrid', palette='colorblind')
 
-df = cache_func(pd.read_csv, 'C:\\FootballStatistics\\all_foot_stat.csv')
+df = cache_func(pd.read_csv, 'all_foot_stat.csv')
 df = df.drop(columns=['Unnamed: 0'])
 df = df.sort_values(['Клуб'])
 df = df.drop(df.index[df['Кол-во минут'] == 0])
