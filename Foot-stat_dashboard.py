@@ -119,12 +119,12 @@ def dist_plot(x):
 #Рисуем все диаграммы
 if st.sidebar.checkbox('Показать диаграммы'):
 
-	try:
-		scatter_plot(new_df[sort_by[0]], new_df[sort_by[1]], new_df['Клуб'])
-		st.subheader(f'Диаграмма рассеяния: \'{sort_by[0]}\' и \'{sort_by[1]}\'')
-		st.pyplot()
-	except (IndexError, KeyError) as e:
-		pass
+	# try:
+	# 	scatter_plot(new_df[sort_by[0]], new_df[sort_by[1]], new_df['Клуб'])
+	# 	st.subheader(f'Диаграмма рассеяния: \'{sort_by[0]}\' и \'{sort_by[1]}\'')
+	# 	st.pyplot()
+	# except (IndexError, KeyError) as e:
+	# 	pass
 
 	try:
 		dist_plot(new_df[sort_by[0]])
